@@ -40,6 +40,7 @@ package com.company;
     -----------------------------
 */
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.*;
 
@@ -50,6 +51,7 @@ public class ReactBase {
     final int CM_QUIT = 4;
     int gameSelection;
     String Player;
+    HashMap<String, String> records = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
 
 
@@ -92,15 +94,11 @@ public class ReactBase {
         String [] line;
         for (int i=0; i<rec.length; i++) {
             line = rec[i].split(" ");
+            records.put(line[0], line[1]);
         }
-
-
-        /*Object [][] records = {
-                {
-
-                }
-        }*/
-
+        for (String j : records.keySet()) {
+            System.out.println(j + " " + records.get(j));
+        }
     }
 
     private void NewPlayer(){
