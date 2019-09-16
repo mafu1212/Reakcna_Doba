@@ -65,6 +65,7 @@ public class ReactBase {
 
     private ReactBase() throws IOException {
         ImportRecords();
+        System.out.println("Zadaj meno hraca: ");
         NewPlayer();
     }
 
@@ -97,12 +98,13 @@ public class ReactBase {
             records.put(line[0], line[1]);
         }
         for (String j : records.keySet()) {
-            System.out.println(j + " " + records.get(j));
+            //System.out.println(j + " " + records.get(j));
         }
     }
 
     private void NewPlayer(){
         Player = sc.nextLine();
+        System.out.println("1 - Spusť hru\n" + "2 - Zmena hráča\n" + "3 - TOP 10\n" + "4 - Koniec");
     }
 
     private int Menu(){
