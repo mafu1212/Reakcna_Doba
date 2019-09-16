@@ -40,8 +40,10 @@ package com.company;
     -----------------------------
 */
 
-import java.util.HashMap;
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
+import java.lang.*;
 import java.io.*;
 
 public class ReactBase {
@@ -50,7 +52,10 @@ public class ReactBase {
     final int CM_TOP10 = 3;
     final int CM_QUIT = 4;
     int gameSelection;
+    long end;
+    long begin;
     String Player;
+    String time;
     HashMap<String, String> records = new HashMap<String, String>();
     Scanner sc = new Scanner(System.in);
 
@@ -97,9 +102,9 @@ public class ReactBase {
             line = rec[i].split(" ");
             records.put(line[0], line[1]);
         }
-        for (String j : records.keySet()) {
+        /*for (String j : records.keySet()) {
             //System.out.println(j + " " + records.get(j));
-        }
+        }*/
     }
 
     private void NewPlayer(){
@@ -113,6 +118,19 @@ public class ReactBase {
     }
 
     private int Play(String who){
+        begin = System.currentTimeMillis();
+        Action action = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                end = System.currentTimeMillis();
+            }
+        };
+        JTextField textField = new JTextField(10);
+        textField.addActionListener( action );
+        //time = (end-begin);
+        records.put(who, time);
         return Integer.MAX_VALUE;
     }
 
