@@ -59,7 +59,7 @@ public class ReactBase {
 
     ArrayList<Object> objects = new ArrayList();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         boolean gameOn;
 	    ReactBase Game = new ReactBase();
 	    do
@@ -67,7 +67,7 @@ public class ReactBase {
         while (gameOn);
     }
 
-    private ReactBase() throws IOException {
+    private ReactBase() {
         ImportRecords();
         NewPlayer();
     }
@@ -95,7 +95,7 @@ public class ReactBase {
     /////////////////////////////////
     /////////////////////////////////
 
-    private void ImportRecords() throws IOException {
+    private void ImportRecords() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("records"));
             String line = br.readLine();
