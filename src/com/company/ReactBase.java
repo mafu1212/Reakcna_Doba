@@ -51,14 +51,13 @@ public class ReactBase {
     final int CM_CHANGE_PLAYER = 2;
     final int CM_TOP10 = 3;
     final int CM_QUIT = 4;
-    int gameSelection;
-    long end;
-    long begin;
     String Player;
-    String time;
-    HashMap<String, String> records = new HashMap<String, String>();
-    Scanner sc = new Scanner(System.in);
 
+    Scanner sc = new Scanner(System.in);
+    Random rn = new Random();
+    BufferedWriter bf;
+
+    ArrayList<Object> objects = new ArrayList();
 
     public static void main(String[] args) throws IOException {
         boolean gameOn;
@@ -70,7 +69,6 @@ public class ReactBase {
 
     private ReactBase() throws IOException {
         ImportRecords();
-        System.out.println("Zadaj meno hraca: ");
         NewPlayer();
     }
 
@@ -94,31 +92,55 @@ public class ReactBase {
         return true;
     }
 
+    /////////////////////////////////
+    /////////////////////////////////
+
     private void ImportRecords() throws IOException {
-        BufferedReader file = new BufferedReader(new FileReader("records.txt"));
-        String [] rec = file.readLine().split(";");
-        String [] line;
-        for (int i=0; i<rec.length; i++) {
-            line = rec[i].split(" ");
-            records.put(line[0], line[1]);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("records"));
+            String line = br.readLine();
+
+            while (line != null){
+                String[] data = line.split(":");
+                Record record = new Record(data[0], Integer.parseInt(data[1]));
+                objects.add(record);
+                line = br.readLine();
+            }
+            //objects.sort();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        /*for (String j : records.keySet()) {
-            //System.out.println(j + " " + records.get(j));
-        }*/
     }
 
-    private void NewPlayer(){
+    //////////////////////////////////////////////
+
+    public void NewPlayer(){
+        System.out.println("Zadaj svoje meno: ");
         Player = sc.nextLine();
-        System.out.println("1 - Spusť hru\n" + "2 - Zmena hráča\n" + "3 - TOP 10\n" + "4 - Koniec");
     }
 
-    private int Menu(){
-        gameSelection = sc.nextInt();
-        return gameSelection;//CM_QUIT;
+    public int Menu(){
+        System.out.println("1 - Spusť hru\n" +
+                "2 - Zmena hráča\n" +
+                "3 - TOP 10\n" +
+                "4 - Koniec");
+        try {
+            int vstup = Integer.parseInt(sc.nextLine());
+
+            if (vstup >= 1 && vstup <= 4)
+                return vstup;
+        } catch (Exception e) {
+            return CM_QUIT;
+        }
+        return CM_QUIT;
     }
+
+    /////////////////////////////////////////////
 
     private int Play(String who){
-        begin = System.currentTimeMillis();
+        return 0;
+    }
+        /*begin = System.currentTimeMillis();
         Action action = new AbstractAction()
         {
             @Override
@@ -130,9 +152,9 @@ public class ReactBase {
         JTextField textField = new JTextField(10);
         textField.addActionListener( action );
         //time = (end-begin);
-        records.put(who, time);
-        return Integer.MAX_VALUE;
-    }
+        Record.put(who, time);
+        return Integer.MAX_VALUE;*/
+
 
     private void Sort(String who, int record){}
 
