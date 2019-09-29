@@ -45,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.lang.*;
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 public class ReactBase {
     final int CM_PLAY = 1;
@@ -57,7 +58,8 @@ public class ReactBase {
     Random rn = new Random();
     BufferedWriter bf;
 
-    ArrayList<Object> objects = new ArrayList();
+    ArrayList<Record> tabulka = new ArrayList();
+    Sort sorter = new Sort();
 
     public static void main(String[] args) {
         boolean gameOn;
@@ -78,13 +80,13 @@ public class ReactBase {
                 NewPlayer();
                 return true;
             case CM_PLAY:
-                int LastTime = Play(Player);
-                Sort(Player, LastTime);
-                ShowRecords(Player, LastTime);
+                long LastTime = Play(Player);
+                Record rec = Sort(Player, LastTime);
+                ShowRecords(rec);
                 SaveRecords();
                 return true;
             case CM_TOP10:
-                ShowRecords("", 0);
+                ShowRecords(null);
                 return true;
             case CM_QUIT:
                 return false;
@@ -102,11 +104,9 @@ public class ReactBase {
 
             while (line != null){
                 String[] data = line.split(":");
-                Record record = new Record(data[0], Integer.parseInt(data[1]));
-                objects.add(record);
+                tabulka.add(new Record(data[0], Integer.parseInt(data[1])));
                 line = br.readLine();
             }
-            //objects.sort();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,15 +115,15 @@ public class ReactBase {
     //////////////////////////////////////////////
 
     public void NewPlayer(){
-        System.out.println("Zadaj svoje meno: ");
+        System.out.println("Your name: ");
         Player = sc.nextLine();
     }
 
     public int Menu(){
-        System.out.println("1 - Spusť hru\n" +
-                "2 - Zmena hráča\n" +
+        System.out.println("1 - Start game\n" +
+                "2 - Change player\n" +
                 "3 - TOP 10\n" +
-                "4 - Koniec");
+                "4 - End");
         try {
             int vstup = Integer.parseInt(sc.nextLine());
 
@@ -137,29 +137,66 @@ public class ReactBase {
 
     /////////////////////////////////////////////
 
-    private int Play(String who){
-        return 0;
+    private long Play(String who) {
+        System.out.println("Ready?");
+        sc.nextLine();
+        System.out.println("Set ...");
+        try {
+            TimeUnit.SECONDS.sleep((long) (0.5 + rn.nextDouble() * (3 - 0.5)));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("GO!");
+        long startTime = System.currentTimeMillis();
+        sc.nextLine();
+        long endTime = System.currentTimeMillis();
+
+        long time = endTime - startTime;
+        if (time == 0) {
+            System.out.println("Try again...");
+            return 1000000;
+        }
+
+        return time;
     }
-        /*begin = System.currentTimeMillis();
-        Action action = new AbstractAction()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                end = System.currentTimeMillis();
+
+    private Record Sort(String who, long record){
+        Record rec = new Record(who, record);
+        tabulka.add(rec);
+        tabulka.sort(sorter);
+        return rec;
+    }
+
+    private void ShowRecords(Record record){
+        if (record == null) {
+            for (int i = 0; i < tabulka.size(); i++) {
+                Record rec = tabulka.get(i);
+                String indStr = (i + 1) + ".";
+                System.out.printf("%-6s %-25s %d\n", indStr, rec.name, rec.record);
+                if (i == 9) break;
             }
-        };
-        JTextField textField = new JTextField(10);
-        textField.addActionListener( action );
-        //time = (end-begin);
-        Record.put(who, time);
-        return Integer.MAX_VALUE;*/
+        } else {
+            int index = tabulka.indexOf(record);
+            for (int i = 0; i < tabulka.size(); i++) {
+                if (i <= index + 5 && i >= index - 5) {
+                    Record rec = tabulka.get(i);
+                    String indStr = (i + 1) + ".";
+                    System.out.printf("%-6s %-25s %d\n", indStr, rec.name, rec.record);
+                }
+            }
+        }
+    }
 
-
-    private void Sort(String who, int record){}
-
-    private void ShowRecords(String who, int record){}
-
-    private void SaveRecords(){}
+    private void SaveRecords(){
+        try {
+            bf = new BufferedWriter(new FileWriter("records"));
+            for (Record rec: tabulka) {
+                bf.write(rec.name + ":" + rec.record + "\n");
+            }
+            bf.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
