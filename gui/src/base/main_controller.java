@@ -63,7 +63,7 @@ public class main_controller {
                     }
                     main.currentRecord = main.Sort(main.player, time);
 
-                    //Main.SaveRecords(main.currentRecord);
+                    Main.SaveRecords(main.currentRecord);
                     running = false;
                     System.out.println(Main.currentRecord.record);
 
