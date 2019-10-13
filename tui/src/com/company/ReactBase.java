@@ -40,8 +40,6 @@ package com.company;
     -----------------------------
 */
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.*;
 import java.lang.*;
 import java.io.*;
@@ -58,8 +56,8 @@ public class ReactBase {
     Random rn = new Random();
     BufferedWriter bf;
 
-    ArrayList<Record> tabulka = new ArrayList();
-    Sort sorter = new Sort();
+    ArrayList<Record> record = new ArrayList();
+    Sort sort = new Sort();
 
     public static void main(String[] args) {
         boolean gameOn;
@@ -104,7 +102,7 @@ public class ReactBase {
 
             while (line != null){
                 String[] data = line.split(":");
-                tabulka.add(new Record(data[0], Integer.parseInt(data[1])));
+                record.add(new Record(data[0], Integer.parseInt(data[1])));
                 line = br.readLine();
             }
         } catch (Exception e) {
@@ -141,20 +139,24 @@ public class ReactBase {
         System.out.println("Ready?");
         sc.nextLine();
         System.out.println("Set ...");
+
+
         try {
             TimeUnit.SECONDS.sleep((long) (0.5 + rn.nextDouble() * (3 - 0.5)));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("GO!");
-        long startTime = System.currentTimeMillis();
-        sc.nextLine();
-        long endTime = System.currentTimeMillis();
 
-        long time = endTime - startTime;
+
+        System.out.println("GO!");
+        long start = System.currentTimeMillis();
+        sc.nextLine();
+        long end = System.currentTimeMillis();
+        long time = end - start;
+
         if (time == 0) {
             System.out.println("Try again...");
-            return 1000000;
+            return 1000;
         }
 
         return time;
@@ -162,24 +164,24 @@ public class ReactBase {
 
     private Record Sort(String who, long record){
         Record rec = new Record(who, record);
-        tabulka.add(rec);
-        tabulka.sort(sorter);
+        this.record.add(rec);
+        this.record.sort(sort);
         return rec;
     }
 
     private void ShowRecords(Record record){
         if (record == null) {
-            for (int i = 0; i < tabulka.size(); i++) {
-                Record rec = tabulka.get(i);
+            for (int i = 0; i < this.record.size(); i++) {
+                Record rec = this.record.get(i);
                 String indStr = (i + 1) + ".";
                 System.out.printf("%-6s %-25s %d\n", indStr, rec.name, rec.record);
                 if (i == 9) break;
             }
         } else {
-            int index = tabulka.indexOf(record);
-            for (int i = 0; i < tabulka.size(); i++) {
+            int index = this.record.indexOf(record);
+            for (int i = 0; i < this.record.size(); i++) {
                 if (i <= index + 5 && i >= index - 5) {
-                    Record rec = tabulka.get(i);
+                    Record rec = this.record.get(i);
                     String indStr = (i + 1) + ".";
                     System.out.printf("%-6s %-25s %d\n", indStr, rec.name, rec.record);
                 }
@@ -190,7 +192,7 @@ public class ReactBase {
     private void SaveRecords(){
         try {
             bf = new BufferedWriter(new FileWriter("records"));
-            for (Record rec: tabulka) {
+            for (Record rec: record) {
                 bf.write(rec.name + ":" + rec.record + "\n");
             }
             bf.close();

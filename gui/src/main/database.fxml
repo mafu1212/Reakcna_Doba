@@ -8,12 +8,12 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="base.main_controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.Controller">
    <children>
-      <TableView fx:id="tabulka" layoutX="168.0" layoutY="100.0" prefHeight="200.0" prefWidth="291.0">
+      <TableView fx:id="database" layoutX="168.0" layoutY="100.0" prefHeight="200.0" prefWidth="291.0">
         <columns>
-          <TableColumn fx:id="poradieColumn" prefWidth="58.3333740234375" text="poradie" />
-          <TableColumn fx:id="nameColumn" prefWidth="159.6666259765625" text="meno" />
+          <TableColumn fx:id="orderColumn" prefWidth="58.3333740234375" text="order" />
+          <TableColumn fx:id="nameColumn" prefWidth="159.6666259765625" text="name" />
             <TableColumn fx:id="scoreColumn" prefWidth="72.6666259765625" text="score" />
         </columns>
       </TableView>
