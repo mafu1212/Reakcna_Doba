@@ -99,9 +99,9 @@ public class Controller {
             Main.primary.setScene(new Scene(root));
             Main.primary.show();
 
-            Controller controller = gameView.getController();
+            Controller control = gameView.getController();
 
-            controller.mainText.setText("Ready??");
+            control.mainText.setText("Ready??");
 
             Main.primary.getScene().addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
                 if(key.getCode()== KeyCode.ENTER) {
@@ -130,7 +130,7 @@ public class Controller {
                         start = -1;
 
                     } else {
-                        controller.mainText.setText("Set?");
+                        control.mainText.setText("Set?");
 
                         Task<Void> sleep = new Task<Void>() {
                             @Override
@@ -139,12 +139,13 @@ public class Controller {
                                 try {
                                     Thread.sleep((long)(0.5 + random.nextDouble() * (3 - 0.5)) * 1000);
                                 } catch (InterruptedException e) {
+
                                 }
                                 return null;
                             }
                         };
                         sleep.setOnSucceeded(event -> {
-                            controller.mainText.setText("Start!");
+                            control.mainText.setText("Start!");
                             start = System.currentTimeMillis();
 //                                running = true;
                         });
@@ -194,7 +195,7 @@ public class Controller {
         }
 
         database.getItems().setAll(data);
-        scoreLabel.setText("Score: " + Main.currentRecord.score);
+        //scoreLabel.setText("Score: " + Main.currentRecord.score);
 
     }
 }
